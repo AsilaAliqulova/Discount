@@ -100,7 +100,7 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.userModel.findAll({include:{all:true}})
   }
 
   findOne(id: number) {
@@ -118,7 +118,7 @@ export class UsersService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.userModel.destroy({where:{id}})
   }
 
   async findUser(findUserDto: FindUserDto) {

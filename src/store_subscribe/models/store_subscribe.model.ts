@@ -23,7 +23,7 @@ export class StoreSubscribe extends Model<StoreSubscribe, IStoreSubscribe> {
   })
   userId: number;
 
-  @BelongsTo(() => User, { foreignKey: "userId" })
+  @BelongsTo(() => User)
   user: User;
 
 
@@ -35,6 +35,6 @@ export class StoreSubscribe extends Model<StoreSubscribe, IStoreSubscribe> {
   })
   storeId: number;
 
-  @BelongsTo(() => Store, { foreignKey: "storeId" })
+  @BelongsTo(() => Store)
   store: Store;
 }

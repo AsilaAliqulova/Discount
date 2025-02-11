@@ -15,7 +15,7 @@ export class AdminService {
 
   async findAll(): Promise<Admin[]> {
     // return this.adminModel await shartmas o'zgaruvchiga yuklasak await
-    return this.adminModel.findAll();
+    return this.adminModel.findAll({include:{all:true}});
   }
 
   findAdminByEmail(email: string): Promise<Admin | null> {

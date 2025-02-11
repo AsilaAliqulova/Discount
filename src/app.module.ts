@@ -25,6 +25,16 @@ import { StoreSocialLinkModule } from './store_social_link/store_social_link.mod
 import { Store } from "./store/models/store.models";
 import { StoreSubscribe } from "./store_subscribe/models/store_subscribe.model";
 import { Bot } from "./bot/models/bot.model";
+import { DistrictModule } from './district/district.module';
+import { RegionModule } from './region/region.module';
+import { FavouritesModule } from './favourites/favourites.module';
+import { SocialLinkModule } from './social_link/social_link.module';
+import { District } from "./district/models/district.model";
+import { Region } from "./region/models/region.model";
+import { Favourite } from "./favourites/models/favourite.model";
+import { Rewiew } from "./rewiews/models/rewiew.model";
+import { SocialLink } from "./social_link/models/social_link.model";
+import { StoreSocialLink } from "./store_social_link/models/store_social_link.model";
 
 @Module({
   imports: [
@@ -53,7 +63,13 @@ import { Bot } from "./bot/models/bot.model";
         Admin,
         Store,
         StoreSubscribe,
-        Bot
+        Bot,
+        District,
+        Region,
+        Favourite,
+        Rewiew,
+        SocialLink,
+        StoreSocialLink
       ],
       autoLoadModels: true, //modelllarni avtomatik topib olish
       sync: { alter: true }, //db bilan bog'lanish
@@ -72,6 +88,10 @@ import { Bot } from "./bot/models/bot.model";
     StoreModule,
     StoreSubscribeModule,
     StoreSocialLinkModule,
+    DistrictModule,
+    RegionModule,
+    FavouritesModule,
+    SocialLinkModule,
   ],
   controllers: [],
   providers: [],

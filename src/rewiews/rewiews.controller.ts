@@ -1,15 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { RewiewsService } from './rewiews.service';
 import { CreateRewiewDto } from './dto/create-rewiew.dto';
 import { UpdateRewiewDto } from './dto/update-rewiew.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('rewiews')
 export class RewiewsController {
   constructor(private readonly rewiewsService: RewiewsService) {}
 
   @Post()
-  create(@Body() createRewiewDto: CreateRewiewDto) {
-    return this.rewiewsService.create(createRewiewDto);
+   @UseInterceptors(FileInterceptor("photo"))
+  create(@Body() createRewiewDto: CreateRewiewDto,@UploadedFile() photo:any) {
+    return this.rewiewsService.create(createRewiewDto,photo);
   }
 
   @Get()

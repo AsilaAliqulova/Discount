@@ -15,7 +15,7 @@ export class DiscountService {
   }
 
   findAll() {
-    return this.discountModel.findAll();
+    return this.discountModel.findAll({include:{all:true}});
   }
 
   findOne(id: number) {

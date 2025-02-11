@@ -15,7 +15,7 @@ export class CategoryService {
   }
 
   findAll() {
-    return this.categoryModel.findAll();
+    return this.categoryModel.findAll({include:{all:true}});
   }
 
   findOne(id: number) {

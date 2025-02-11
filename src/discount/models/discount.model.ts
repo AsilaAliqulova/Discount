@@ -1,6 +1,9 @@
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
 import { DiscountType } from "../../discount_type/models/discount_type.model";
 import { Category } from "../../category/models/category.model";
+import { Favourite } from "../../favourites/models/favourite.model";
+import { Store } from "../../store/models/store.models";
+import { Photo } from "../../photo/models/photo.model";
 
 interface IDiscountCreationAtrr {
   title: string;
@@ -85,9 +88,20 @@ export class Discount extends Model<Discount, IDiscountCreationAtrr> {
   })
   categoryId: number;
 
+  @ForeignKey(() => Store)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  storeId: number;
+
   @BelongsTo(() => DiscountType)
   discount_type: DiscountType;
 
   @BelongsTo(() => Category)
   category: Category;
+
+   @HasMany(() => Favourite )
+  favourite: Favourite[];  
+   @HasMany(() => Photo )
+  photo: Photo[];
 }

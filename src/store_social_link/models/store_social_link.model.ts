@@ -1,4 +1,6 @@
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
+import { Store } from "../../store/models/store.models";
+import { SocialLink } from "../../social_link/models/social_link.model";
 
 interface ISocialLinkStoreCreationAttr{
 
@@ -29,13 +31,18 @@ export class StoreSocialLink extends Model<
     type: DataType.STRING,
   })
   description: string;
-  //   @ForeignKey(() => SocialLink)
-  //   @Column({
-  //     type: DataType.INTEGER,
-  //     allowNull: true,
-  //   })
-  //   social_linkId: number;
 
-//   @BelongsTo(() => SocialLink, { foreignKey: "social_linkId" })
-//   socialLink: SocialLink;
+
+
+   @HasMany(() => Store)
+  store: Store[];
+    @ForeignKey(() => SocialLink)
+    @Column({
+      type: DataType.INTEGER,
+      allowNull: true,
+    })
+    social_linkId: number;
+
+  @BelongsTo(() => SocialLink)
+  socialLink: SocialLink;
 }

@@ -10,6 +10,7 @@ import { Discount } from "../../discount/models/discount.model";
 
 interface IPhotoCreationAtrr {
   url: string;
+  photo:string
   discountId: number;
 }
 
@@ -26,6 +27,11 @@ export class Photo extends Model<Photo, IPhotoCreationAtrr> {
     type: DataType.STRING,
   })
   url: string;
+  
+  @Column({
+    type: DataType.STRING,
+  })
+  photo: string;
 
   @ForeignKey(() => Discount)
   @Column({
@@ -34,6 +40,6 @@ export class Photo extends Model<Photo, IPhotoCreationAtrr> {
   })
   discountId: number;
 
-  @BelongsTo(() => Discount, { foreignKey: "discountId" })
+  @BelongsTo(() => Discount)
   parent: Discount;
 }

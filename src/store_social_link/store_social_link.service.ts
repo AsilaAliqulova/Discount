@@ -16,7 +16,7 @@ export class StoreSocialLinkService {
   }
 
   findAll() {
-    return this.storeSocialLinkModel.findAll();
+    return this.storeSocialLinkModel.findAll({include:{all:true}});
   }
 
   findOne(id: number) {

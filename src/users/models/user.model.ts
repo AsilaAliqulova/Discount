@@ -1,6 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import {  Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import { StoreSubscribe } from "../../store_subscribe/models/store_subscribe.model";
+import { Favourite } from "../../favourites/models/favourite.model";
+import { Store } from "../../store/models/store.models";
 
 interface IUserCreationAttr {
   name: string;
@@ -66,6 +68,12 @@ export class User extends Model<User, IUserCreationAttr> {
   })
   activation_link: string;
 
-  // @HasMany(() => StoreSubscribe)
-  // customer: StoreSubscribe[];
+   @HasMany(() => Favourite )
+  favourite: Favourite[];
+
+  @HasMany(() => StoreSubscribe)
+  customer: StoreSubscribe[];
+
+  @HasMany(() => Store)
+  store: Store[];
 }

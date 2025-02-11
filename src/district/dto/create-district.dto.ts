@@ -1,9 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class CreateStoreSubscribeDto {
+export class CreateDistrictDto {
     @ApiProperty()
-    userId: number;
+    name:string
     @ApiProperty()
-    storeId: number;
-    
+    regionId:number
 }

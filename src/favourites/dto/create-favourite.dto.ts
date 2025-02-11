@@ -1,10 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class CreatePhotoDto {
+export class CreateFavouriteDto {
     @ApiProperty()
-    url:string
+    userId:number
     @ApiProperty()
     discountId:number
-    @ApiProperty()
-    photo:string
 }

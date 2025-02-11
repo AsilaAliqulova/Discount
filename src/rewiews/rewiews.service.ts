@@ -1,19 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRewiewDto } from './dto/create-rewiew.dto';
 import { UpdateRewiewDto } from './dto/update-rewiew.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { FileService } from '../file/file.service';
+import { Rewiew } from './models/rewiew.model';
 
 @Injectable()
 export class RewiewsService {
-  create(createRewiewDto: CreateRewiewDto) {
-    return 'This action adds a new rewiew';
+  constructor(
+    @InjectModel(Rewiew) private readonly rewiewModel: typeof Rewiew,
+    private readonly fileService: FileService
+  ) {}
+ async create(createRewiewDto: CreateRewiewDto,photo:any) {
+    const fileName = await this.fileService.saveFile(photo); 
+    return this.rewiewModel.create({...createRewiewDto,photo:fileName})
   }
 
   findAll() {
-    return `This action returns all rewiews`;
+    return this.rewiewModel.findAll({include:{all:true}})
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} rewiew`;
+    return this.rewiewModel.findByPk(id)
   }
 
   update(id: number, updateRewiewDto: UpdateRewiewDto) {
@@ -21,6 +29,6 @@ export class RewiewsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} rewiew`;
+    return this.rewiewModel.destroy({where:{id}})
   }
 }

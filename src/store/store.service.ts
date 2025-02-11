@@ -16,7 +16,7 @@ export class StoreService {
   }
 
   findAll() {
-    return this.storeModel.findAll();
+    return this.storeModel.findAll({include:{all:true}});
   }
 
   findOne(id: number) {
