@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {  Column, DataType, Model, Table } from "sequelize-typescript";
+import {  Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import { StoreSubscribe } from "../../store_subscribe/models/store_subscribe.model";
 
 interface IUserCreationAttr {
   name: string;
@@ -58,10 +59,13 @@ export class User extends Model<User, IUserCreationAttr> {
   @Column({
     type: DataType.STRING,
   })
-  hashed_refresh_token: string|null;
+  hashed_refresh_token: string | null;
 
   @Column({
     type: DataType.STRING,
   })
   activation_link: string;
+
+  // @HasMany(() => StoreSubscribe)
+  // customer: StoreSubscribe[];
 }

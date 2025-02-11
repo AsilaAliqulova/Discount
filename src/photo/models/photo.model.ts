@@ -23,9 +23,9 @@ export class Photo extends Model<Photo, IPhotoCreationAtrr> {
   id: number;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
   })
-  url: number;
+  url: string;
 
   @ForeignKey(() => Discount)
   @Column({

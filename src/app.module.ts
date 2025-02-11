@@ -19,16 +19,22 @@ import { RewiewsModule } from './rewiews/rewiews.module';
 import { BotModule } from './bot/bot.module';
 import { TelegrafModule } from "nestjs-telegraf";
 import { BOT_NAME } from "./app.constants";
+import { StoreModule } from './store/store.module';
+import { StoreSubscribeModule } from './store_subscribe/store_subscribe.module';
+import { StoreSocialLinkModule } from './store_social_link/store_social_link.module';
+import { Store } from "./store/models/store.models";
+import { StoreSubscribe } from "./store_subscribe/models/store_subscribe.model";
+import { Bot } from "./bot/models/bot.model";
 
 @Module({
   imports: [
     TelegrafModule.forRootAsync({
-      botName:BOT_NAME,
-      useFactory:()=>({
-        token:process.env.BOT_TOKEN ||"1234",
-        middlewares:[],
-        include:[BotModule]
-      })
+      botName: BOT_NAME,
+      useFactory: () => ({
+        token: process.env.BOT_TOKEN || "1234",
+        middlewares: [],
+        include: [BotModule],
+      }),
     }),
     ConfigModule.forRoot({ envFilePath: ".env", isGlobal: true }),
     SequelizeModule.forRoot({
@@ -38,7 +44,17 @@ import { BOT_NAME } from "./app.constants";
       port: Number(process.env.POSTGRES_PORT),
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Category, DiscountType, Photo, Discount,Admin],
+      models: [
+        User,
+        Category,
+        DiscountType,
+        Photo,
+        Discount,
+        Admin,
+        Store,
+        StoreSubscribe,
+        Bot
+      ],
       autoLoadModels: true, //modelllarni avtomatik topib olish
       sync: { alter: true }, //db bilan bog'lanish
       logging: false,
@@ -53,7 +69,9 @@ import { BOT_NAME } from "./app.constants";
     AdminModule,
     RewiewsModule,
     BotModule,
-    
+    StoreModule,
+    StoreSubscribeModule,
+    StoreSocialLinkModule,
   ],
   controllers: [],
   providers: [],
