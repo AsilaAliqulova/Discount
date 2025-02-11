@@ -100,7 +100,7 @@ export class UsersService {
   }
 
   findAll() {
-    return this.userModel.findAll({include:{all:true}})
+    return this.userModel.findAll({ include: { all: true } });
   }
 
   findOne(id: number) {
@@ -113,12 +113,18 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userModel.findByPk(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    await user.update(updateUserDto);
+    return user;
   }
 
   remove(id: number) {
-    return this.userModel.destroy({where:{id}})
+    return this.userModel.destroy({ where: { id } });
   }
 
   async findUser(findUserDto: FindUserDto) {
@@ -144,11 +150,11 @@ export class UsersService {
 
     console.log(where);
 
-    const users = await this.userModel.findAll({where})
+    const users = await this.userModel.findAll({ where });
     if (!users) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException("User not found");
     }
 
-    return users
+    return users;
   }
 }

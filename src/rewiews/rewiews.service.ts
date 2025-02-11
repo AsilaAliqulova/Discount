@@ -11,24 +11,32 @@ export class RewiewsService {
     @InjectModel(Rewiew) private readonly rewiewModel: typeof Rewiew,
     private readonly fileService: FileService
   ) {}
- async create(createRewiewDto: CreateRewiewDto,photo:any) {
-    const fileName = await this.fileService.saveFile(photo); 
-    return this.rewiewModel.create({...createRewiewDto,photo:fileName})
+  async create(createRewiewDto: CreateRewiewDto, photo: any) {
+    const fileName = await this.fileService.saveFile(photo);
+    return this.rewiewModel.create({ ...createRewiewDto, photo: fileName });
   }
 
   findAll() {
-    return this.rewiewModel.findAll({include:{all:true}})
+    return this.rewiewModel.findAll({ include: { all: true } });
   }
 
   findOne(id: number) {
-    return this.rewiewModel.findByPk(id)
+    return this.rewiewModel.findByPk(id);
   }
 
-  update(id: number, updateRewiewDto: UpdateRewiewDto) {
-    return `This action updates a #${id} rewiew`;
+  async update(id: number, updateRewiewDto: UpdateRewiewDto, photo?: any) {
+    if (photo) {
+      const fileName = await this.fileService.saveFile(photo);
+      updateRewiewDto.photo = fileName;
+    }
+    const updated = await this.rewiewModel.update(updateRewiewDto, {
+      where: { id },
+      returning: true,
+    });
+    return updated[1][0];
   }
 
   remove(id: number) {
-    return this.rewiewModel.destroy({where:{id}})
+    return this.rewiewModel.destroy({ where: { id } });
   }
 }
