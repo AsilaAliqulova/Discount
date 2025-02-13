@@ -7,10 +7,11 @@ import { AuthModule } from "../auth/auth.module";
 import { MailModule } from "../mail/mail.module";
 import { BotModule } from "../bot/bot.module";
 import { Otp } from "../otp/models/otp.model";
+import { SmsModule } from "../sms/sms.module";
 
 @Module({
   imports: [SequelizeModule.forFeature([User,Otp]), 
-  forwardRef(() => AuthModule),MailModule,BotModule],
+  AuthModule,MailModule,BotModule,SmsModule],
   controllers: [UsersController],
   providers: [UsersService],
   exports:[UsersService]

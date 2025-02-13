@@ -139,10 +139,12 @@ export class BotService {
             address.location = `${ctx.message.location.latitude},${ctx.message.location.longitude}`;
             address.last_state = "finish";
             await address.save();
-            await ctx.reply("Manzil saqlandi",{
-              parse_mode:"HTML",
-              ...Markup.keyboard([["Mening manzillarim","Yangi manzil qo'shish"]]).resize()
-            })
+            await ctx.reply("Manzil saqlandi", {
+              parse_mode: "HTML",
+              ...Markup.keyboard([
+                ["Mening manzillarim", "Yangi manzil qo'shish"],
+              ]).resize(),
+            });
           }
         }
       }
@@ -215,11 +217,24 @@ export class BotService {
       }
       await this.bot.telegram.sendMessage(
         user.userId!,
-        `Verifcation OTP code:${OTP}`
+        `Verifcation OTP code:  ${OTP}`
       );
       return true;
     } catch (error) {
       console.log("senOTPda error", error);
+    }
+  }
+
+  async admin_menu(ctx: Context, menu_text = `<b>Admin menusi</b>`) {
+    try {
+      await ctx.reply(menu_text, {
+        parse_mode: "HTML",
+        ...Markup.keyboard([["Mijozlar", "Ustalar"]])
+          .oneTime()
+          .resize(),
+      });
+    } catch (error) {
+      console.log("Admin menusida xatolik", error);
     }
   }
 }

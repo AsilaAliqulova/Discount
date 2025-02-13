@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   HttpCode,
+  InternalServerErrorException,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -17,10 +18,14 @@ import { FindUserDto } from "./dto/find-user.dto";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { PhoneUserDto } from "./dto/phone-user.dto";
 import { VerifiOtpDto } from "./dto/verify-otp.dto";
+import { SmsService } from "../sms/sms.service";
 
 @Controller("users")
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly smsService: SmsService
+  ) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -39,6 +44,10 @@ export class UsersController {
     return this.usersService.verifyOtp(verifyOtp);
   }
 
+  @Get("/tokinss")
+  async getTokinSms() {
+  return this.usersService.getTokinSms();
+  }
 
   @Get()
   @UseGuards(UserGuard)

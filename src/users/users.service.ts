@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  ServiceUnavailableException,
 } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -21,6 +22,9 @@ import { Otp } from "../otp/models/otp.model";
 import { AddMinutesToDate } from "../helpers/addMinutes";
 import { decode, encode } from "../helpers/crypto";
 import { VerifiOtpDto } from "./dto/verify-otp.dto";
+import { SmsService } from "../sms/sms.service";
+import * as fs from "fs";
+import * as path from "path";
 
 @Injectable()
 export class UsersService {
@@ -29,7 +33,8 @@ export class UsersService {
     @InjectModel(Otp) private readonly otpModel: typeof Otp,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
-    private readonly botService: BotService
+    private readonly botService: BotService,
+    private readonly smsService: SmsService
   ) {}
 
   async getTokens(user: User) {
@@ -182,6 +187,16 @@ export class UsersService {
     }
     //-------------------------SMS---------------------------------------
 
+    const response = await this.smsService.sendSMS(phone_number, otp);
+
+    if (response.status !== 200) {
+      throw new ServiceUnavailableException("Otp yuborishda hatolik");
+    }
+
+    const message =
+      `OTP code has been send to ****` +
+      phone_number.slice(phone_number.length - 4);
+
     const now = new Date();
     const expiration_time = AddMinutesToDate(now, 5);
     await this.otpModel.destroy({ where: { phone_number } });
@@ -201,6 +216,7 @@ export class UsersService {
     const encodedData = await encode(JSON.stringify(details));
     return {
       message: "Otp botga yuborildi",
+      messageSMS: message,
       verification_key: encodedData,
     };
   }
@@ -239,13 +255,31 @@ export class UsersService {
       }
     );
     if (!user[1][0]) {
-       throw new BadRequestException("Bunday foydalanuvchi mavjud emas");
+      throw new BadRequestException("Bunday foydalanuvchi mavjud emas");
     }
 
-    await this.otpModel.update({verified:true},{where:{id:details.otp_id}})
+    await this.otpModel.update(
+      { verified: true },
+      { where: { id: details.otp_id } }
+    );
 
     return {
-      message:"Tabriklayman siz owner boldiz"
+      message: "Tabriklayman siz owner boldiz",
+    };
+  }
+
+  async getTokinSms() {
+    try {
+      const newToken = await this.smsService.refreshToken();
+      console.log("New SMS Token:", newToken);
+
+      const filePath = path.join(__dirname, "..", "..", "tokens.json");
+      fs.writeFileSync(
+        filePath,
+        JSON.stringify({ token: newToken }, null, 2)
+      );
+    } catch (error) {
+      console.error("Failed to refresh token:", error);
     }
   }
 }

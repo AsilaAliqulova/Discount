@@ -1,12 +1,9 @@
-import {
-  Command,
-  Ctx,
-  On,
-  Start,
-  Update,
-} from "nestjs-telegraf";
+import { Command, Ctx, On, Start, Update } from "nestjs-telegraf";
 import { Context } from "telegraf";
 import { BotService } from "./bot.service";
+import { UseFilters, UseGuards } from "@nestjs/common";
+import { TelegrafExceptionFilter } from "../filters/telegraf-exception.filter";
+import { AdminGuard } from "../guards/admin.guard";
 
 @Update()
 export class BotUpdate {
@@ -27,9 +24,17 @@ export class BotUpdate {
 
   @On("location")
   async onLocation(@Ctx() ctx: Context) {
-    await this.botService.onLocation(ctx)
-  
+    await this.botService.onLocation(ctx);
   }
+
+  @UseFilters(TelegrafExceptionFilter)
+  @UseGuards(AdminGuard)
+  @Command("admin")
+  async onAdminCommand(@Ctx() ctx: Context) {
+    await this.botService.admin_menu(ctx, `Xush kelibsiz Admin🙋‍♂️`);
+  }
+
+  
 
   // @On("message")
   // async deleteUnCatchMessage(@Ctx() ctx: Context) {
