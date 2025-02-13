@@ -34,6 +34,7 @@ export class Bot extends Model<Bot, IBotCReationAttr> {
     type: DataType.STRING,
   })
   lang: string | undefined;
+  
   @Column({
     type: DataType.BOOLEAN,
     defaultValue: false,

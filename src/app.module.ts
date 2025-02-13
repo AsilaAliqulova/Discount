@@ -13,28 +13,31 @@ import { PhotoModule } from "./photo/photo.module";
 import { DiscountModule } from "./discount/discount.module";
 import { Photo } from "./photo/models/photo.model";
 import { Discount } from "./discount/models/discount.model";
-import { AdminModule } from './admin/admin.module';
+import { AdminModule } from "./admin/admin.module";
 import { Admin } from "./admin/models/admin.model";
-import { RewiewsModule } from './rewiews/rewiews.module';
-import { BotModule } from './bot/bot.module';
+import { RewiewsModule } from "./rewiews/rewiews.module";
+import { BotModule } from "./bot/bot.module";
 import { TelegrafModule } from "nestjs-telegraf";
 import { BOT_NAME } from "./app.constants";
-import { StoreModule } from './store/store.module';
-import { StoreSubscribeModule } from './store_subscribe/store_subscribe.module';
-import { StoreSocialLinkModule } from './store_social_link/store_social_link.module';
+import { StoreModule } from "./store/store.module";
+import { StoreSubscribeModule } from "./store_subscribe/store_subscribe.module";
+import { StoreSocialLinkModule } from "./store_social_link/store_social_link.module";
 import { Store } from "./store/models/store.models";
 import { StoreSubscribe } from "./store_subscribe/models/store_subscribe.model";
 import { Bot } from "./bot/models/bot.model";
-import { DistrictModule } from './district/district.module';
-import { RegionModule } from './region/region.module';
-import { FavouritesModule } from './favourites/favourites.module';
-import { SocialLinkModule } from './social_link/social_link.module';
+import { DistrictModule } from "./district/district.module";
+import { RegionModule } from "./region/region.module";
+import { FavouritesModule } from "./favourites/favourites.module";
+import { SocialLinkModule } from "./social_link/social_link.module";
 import { District } from "./district/models/district.model";
 import { Region } from "./region/models/region.model";
 import { Favourite } from "./favourites/models/favourite.model";
 import { Rewiew } from "./rewiews/models/rewiew.model";
 import { SocialLink } from "./social_link/models/social_link.model";
 import { StoreSocialLink } from "./store_social_link/models/store_social_link.model";
+import { Address } from "./bot/models/address.model";
+import { OtpModule } from './otp/otp.module';
+import { Otp } from "./otp/models/otp.model";
 
 @Module({
   imports: [
@@ -69,7 +72,9 @@ import { StoreSocialLink } from "./store_social_link/models/store_social_link.mo
         Favourite,
         Rewiew,
         SocialLink,
-        StoreSocialLink
+        StoreSocialLink,
+        Address,
+        Otp
       ],
       autoLoadModels: true, //modelllarni avtomatik topib olish
       sync: { alter: true }, //db bilan bog'lanish
@@ -92,6 +97,7 @@ import { StoreSocialLink } from "./store_social_link/models/store_social_link.mo
     RegionModule,
     FavouritesModule,
     SocialLinkModule,
+    OtpModule,
   ],
   controllers: [],
   providers: [],

@@ -15,6 +15,8 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { UserGuard } from "../guards/user.guard";
 import { FindUserDto } from "./dto/find-user.dto";
 import { ApiBearerAuth } from "@nestjs/swagger";
+import { PhoneUserDto } from "./dto/phone-user.dto";
+import { VerifiOtpDto } from "./dto/verify-otp.dto";
 
 @Controller("users")
 export class UsersController {
@@ -24,6 +26,19 @@ export class UsersController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
+
+  @HttpCode(200)
+  @Post("newotp")
+  newOtp(@Body() phoneUserDto: PhoneUserDto) {
+    return this.usersService.newOtp(phoneUserDto);
+  }
+
+  @HttpCode(200)
+  @Post("verifyotp")
+  verifyOtp(@Body() verifyOtp: VerifiOtpDto) {
+    return this.usersService.verifyOtp(verifyOtp);
+  }
+
 
   @Get()
   @UseGuards(UserGuard)
